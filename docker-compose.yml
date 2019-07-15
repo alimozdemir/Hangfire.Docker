@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRESQL_USERNAME=demo
+      - POSTGRESQL_PASSWORD=111111
+      - POSTGRESQL_DATABASE=demo
+    volumes:
+      - pgdata:/bitnami
+    networks:
+      - svcnw
+
+  hang.ui:
+    image: hangui
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Hangfire.UI/Dockerfile
+    ports:
+      - '5005:80'
+    networks:
+      - svcnw
+    depends_on:
+      - postgresql
+
+  hang.server1:
+    image: hangserver1
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Hangfire.Server/Dockerfile
+    networks:
+      - svcnw
+    depends_on:
+      - postgresql
+      - hang.ui
+
+  hang.server2:
+    image: hangserver1
+    restart: always
+    networks:
+      - svcnw
+    depends_on:
+      - postgresql
+      - hang.ui
+      - hang.server1
+      
+
+volumes:
+  pgdata:
+ 
+networks:
+  svcnw:
+    driver: bridge
