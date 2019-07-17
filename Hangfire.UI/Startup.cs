@@ -33,7 +33,7 @@ namespace Hangfire.UI
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
                 .UsePostgreSqlStorage(Configuration.GetConnectionString("HangfireConnection")));
-                
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -50,23 +50,22 @@ namespace Hangfire.UI
                 app.UseHsts();
             }
 
-
-
             app.UseHangfireDashboard("/hangfire", new DashboardOptions()
             {
-                Authorization = new [] {  new MyAuthorizationFilter () }
+                Authorization = new [] {  new AllowAllConnectionsFilter () },
+                IgnoreAntiforgeryToken = true
             });
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
-    public class MyAuthorizationFilter : IDashboardAuthorizationFilter
+    public class AllowAllConnectionsFilter : IDashboardAuthorizationFilter
     {
         public bool Authorize(DashboardContext context)
         {
-            var httpContext = context.GetHttpContext();
-
-            // Allow all authenticated users to see the Dashboard (potentially dangerous).
+            // Allow outside. You need an authentication scenario for this part.
+            // DON'T GO PRODUCTION WITH THIS LINES.
             return true;
         }
     }

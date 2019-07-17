@@ -1,8 +1,6 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 # /app directory is the where the binary files are will be present
 WORKDIR /app
-# Output port for the ASP.NET Core
-EXPOSE 80
 
 # Start to build
 FROM microsoft/dotnet:2.2-sdk AS build

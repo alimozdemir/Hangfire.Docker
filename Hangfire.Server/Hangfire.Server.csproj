@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>    
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.4" />
     <PackageReference Include="Hangfire.Core" Version="1.7.4" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.6.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Hangfire.Jobs\Hangfire.Jobs.csproj" />
   </ItemGroup>
 </Project>
